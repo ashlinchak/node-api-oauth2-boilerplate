@@ -1,78 +1,46 @@
-var faker = require('faker');
+'use strict';
 
-var log = require('../lib/log')(module);
-var db = require('../db/mongoose');
-var config = require('../config/');
-var encryption = require('../lib/utils/encryption');
+var bcrypt = require('bcrypt');
+var crypto = require('crypto');
+var config = require('../../config/');
 
-var models = require('../models/');
+// // cb = function(err, encrypted) {}
+var generateHash = function (string, cb) {
+  bcrypt.genSalt(config.get('bcrypt:rounds'), function (err, salt) {
+    bcrypt.hash(string, salt, function (err, hash) {
+      if (err) { cb(err); }
 
-var User = models.User;
-var Client = models.Client;
-var AccessToken = models.AccessToken;
-var RefreshToken = models.RefreshToken;
-var AuthorizationCode = models.AuthorizationCode;
-
-User.find({}, function (err, users) {
-  console.log('users: ' + users);
-  if (err) throw err;
-
-  // object of all the users
-  console.log(users);
-});
-
-User.remove({}, function (err) {
-  var user = new User({
-    username: config.get('default:user:username'),
-    email: config.get('default:user:email'),
+      cb(null, hash, salt);
+    });
   });
-  user.password = config.get('default:user:password');
+};
 
-  encryption.generateHash(user.password, function (err, hash, salt) {
-    if (!err) {
-      user.hashedPassword = hash;
-      user.salt = salt;
-      user.save(function (err, user) {
-        if (!err) {
-          log.info('New user - %s:%s', user.username, user.password);
-        } else {
-          return log.error(err);
-        }
-      });
-    } else {
-      return log.error(err);
-    }
-  })
-});
+var generateSaltSync = function () {
+  return bcrypt.genSaltSync(config.get('bcrypt:rounds'));
+};
 
-Client.remove({}, function (err) {
-  var client = new Client({
-    name: config.get('default:client:name'),
-    clientId: config.get('default:client:clientId'),
-    clientSecret: config.get('default:client:clientSecret')
+var generateHashSync = function (password, salt) {
+  return bcrypt.hashSync(password, salt);
+};
+
+// cb = function(err, res) {}
+// res can be true of false
+var validateHash = function (string, hash, cb) {
+  bcrypt.compare(string, hash, function (err, isMatch) {
+    if (err) { cb(err); }
+
+    cb(null, isMatch);
   });
+};
 
-  client.save(function (err, client) {
-    if (!err) {
-      log.info('New client - %s:%s', client.clientId, client.clientSecret);
-    } else {
-      return log.error(err);
-    }
-  });
-});
+var generateToken = function () {
+  return crypto.randomBytes(32).toString('hex');
+};
 
-AccessToken.remove({}, function (err) {
-  if (err) {
-    return log.error(err);
-  }
-});
-
-RefreshToken.remove({}, function (err) {
-  if (err) {
-    return log.error(err);
-  }
-});
-
-setTimeout(function () {
-  db.disconnect();
-}, 3000);
+module.exports = {
+  generateSaltSync: generateSaltSync,
+  generateHashSync: generateHashSync,
+  generateHash: generateHash,
+  validateHash: validateHash,
+  generateToken: generateToken,
+};
