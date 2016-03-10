@@ -1,0 +1,24 @@
+{
+  "resource": "node-api-oauth2-boilerplate",
+  "security": {
+    "tokenLife" : 3600
+  },
+  "api": {
+    "version" : "v1"
+  },
+  "pagination": 20,
+  "bcrypt": {
+    "rounds": 10
+  },
+  "auth": {
+    "accessToken": {
+      "expiresIn": 864000
+    },
+    "authorizationCode": {
+      "expiresIn": 3600
+    },
+    "refreshToken": {
+      "expiresIn": 8640000
+    }
+  }
+}

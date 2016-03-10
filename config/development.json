@@ -1,0 +1,19 @@
+{
+  "host": "127.0.0.1",
+  "port": 4002,
+  "mongoose": {
+    "uri": "mongodb://localhost/nodeApiOAuth2DB"
+  },
+  "default": {
+    "user": {
+      "username": "username",
+      "email": "user@mail.com",
+      "password": "123456789"
+    },
+    "client": {
+      "name": "Client APP",
+      "clientId": "android",
+      "clientSecret": "1234567890"
+    }
+  }
+}
