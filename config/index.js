@@ -7,13 +7,13 @@ var env = process.env.NODE_ENV || 'development';
 var defaultConfigPath = null;
 var envConfigPath = null;
 
-if (process.NODE_ENV == 'production') {
+if (process.env.NODE_ENV == 'production') {
   defaultConfigPath = process.cwd() + 'current/config/defaults.json';
 } else {
   defaultConfigPath = process.cwd() + '/config/defaults.json';
 }
 
-if (process.NODE_ENV == 'production') {
+if (process.env.NODE_ENV == 'production') {
   envConfigPath = process.cwd() + '/current/config/' + env + '.json';
 } else {
   envConfigPath = process.cwd() + '/config/' + env + '.json';
