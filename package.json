@@ -5,6 +5,8 @@
   "repository": "git@github.com:ashlinchak/node-api-oauth2-boilerplate.git",
   "main": "app.js",
   "scripts": {
+    "apidoc:generate": "apidoc -o public/doc -c public/doc -i apidoc -i controllers/api",
+    "apidoc:open": "opener ./public/doc/index.html",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start:ni": "node-inspector -p 8082 -d 5859 --save-live-edit true -b false",
     "start:dev": "nodemon --debug=5859 app.js",
@@ -34,6 +36,7 @@
     "winston": "^2.2.0"
   },
   "devDependencies": {
-    "nodemon": "^1.9.1"
+    "nodemon": "^1.9.1",
+    "opener": "^1.4.1"
   }
 }

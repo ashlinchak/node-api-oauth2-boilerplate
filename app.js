@@ -15,13 +15,16 @@ var db = require('./db/mongoose');
 
 var app = express();
 
+app.set('host', process.env.HOST || config.host || 'localhost');
+app.set('port', process.env.PORT || config.port || 4002);
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(passport.initialize());
 
-app.set('host', process.env.HOST || config.host || 'localhost');
-app.set('port', process.env.PORT || config.port || 4002);
+// Set a public folder for static files
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Middlewares
 app.use(middlewares.RequestLoggerHandler);
