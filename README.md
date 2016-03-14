@@ -58,6 +58,13 @@ Authorization: Bearer 2c11760cfd870a657c7fca17541e8b43637cf196b7affa763c8491c9bf
 Cache-Control: no-cache
 ```
 
+## Documentation
+The documentation is implemented via [apiDoc](http://apidocjs.com/).
+For opening the documentation run:
+```sh
+$ npm run apidoc:open
+```
+
 ## Author
 
 Created by Alexander Shlinchak ([@ashlinchak](<mailto:ashlinchak@gmail.com>)).
